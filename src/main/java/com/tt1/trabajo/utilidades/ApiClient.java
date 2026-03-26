@@ -96,7 +96,7 @@ public class ApiClient extends JavaTimeFormatter {
 
     protected long waitTimeMillis = 10;
 
-    protected String basePath = "http://localhost:8080";
+    protected String basePath = System.getenv("SERVICIO_URL") != null ? System.getenv("SERVICIO_URL") : "http://localhost:8080";
 
     protected RestTemplate restTemplate;
 

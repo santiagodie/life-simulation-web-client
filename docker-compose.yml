@@ -1,0 +1,19 @@
+services:
+  servicio-consumible:
+    image: javillour/servicio-tt1:amd64
+    networks:
+      - red-interna
+
+  trabajo-individual:
+    image: trabajo-individual
+    ports:
+      - "8081:8081"
+    environment:
+      - SERVICIO_URL=http://servicio-consumible:8080
+    networks:
+      - red-interna
+    depends_on:
+      - servicio-consumible
+
+networks:
+  red-interna:

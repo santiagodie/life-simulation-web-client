@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
-
+import org.springframework.beans.factory.annotation.Value;
 import com.tt1.trabajo.utilidades.ResultadosApi;
 
 import org.springframework.http.HttpEntity;
@@ -30,6 +30,8 @@ public class ContactoSimService implements InterfazContactoSim {
 	private final List<Entidad> entidades;
 	private final RestTemplate restTemplate;
 	private final ResultadosApi resultadosApi;
+	@Value("${servicio.url}")
+	private String servicioUrl;
 
 	public ContactoSimService() {
 		this.simulaciones = new HashMap<>();
@@ -97,8 +99,7 @@ public class ContactoSimService implements InterfazContactoSim {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
-		ResponseEntity<Object> respuesta = restTemplate.postForEntity(
-			"http://localhost:8080/Solicitud/Solicitar?nombreUsuario=sadie27",
+		ResponseEntity<Object> respuesta = restTemplate.postForEntity(servicioUrl + "/Solicitud/Solicitar?nombreUsuario=sadie27",
 			request,
 			Object.class
 		);
