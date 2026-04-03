@@ -1,6 +1,6 @@
 # TrabajoIndividual-TT1-Docs
 
-Este proyecto es la parte del trabajo individual de la práctica 5 de la asignatura **Taller Transversal I: Programación y Proceso de Información** de la Universidad de La Rioja (curso 25/26)
+Este proyecto es la parte del trabajo individual de la asignatura **Taller Transversal I: Programación y Proceso de Información** de la Universidad de La Rioja (curso 25/26)
 
 ## Autor
 
@@ -24,6 +24,46 @@ El sistema está construido sobre Spring Boot 4.0.3 con Java 17, utilizando Thym
 - Maven 3.9.6 (incluido Maven Wrapper en el proyecto)
 - Un IDE compatible con Java
 - El servicio externo corriendo en `http://localhost:8080`
+
+**O alternativamente:**
+- Docker y Docker Compose (para ejecutar con contenedores)
+
+## Instalación y Ejecución
+
+### Opción 1: Ejecución Local 
+
+1. Asegúrate de tener el servicio externo corriendo en `http://localhost:8080`
+2. Compila el proyecto:
+   ```bash
+   ./mvnw clean package
+   ```
+3. Ejecuta la aplicación:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+4. Accede a `http://localhost:8081`
+
+### Opción 2: Ejecución con Docker Compose 
+
+1. Construye la imagen Docker de la aplicación:
+   ```bash
+   ./mvnw clean package
+   docker build -t trabajo-individual .
+   ```
+2. Levanta los servicios con Docker Compose:
+   ```bash
+   docker-compose up
+   ```
+   Esto levantará automáticamente:
+   - El servicio externo (ServicioConsumible) en el puerto 8080
+   - La aplicación web en el puerto 8081
+
+3. Accede a `http://localhost:8081`
+
+4. Para detener los servicios:
+   ```bash
+   docker-compose down
+   ```
 
 ## Uso
 
@@ -55,7 +95,25 @@ trabajo-individual-tt1-pr-ctica-5-sadie27/
 │   │   │   ├── com/tt1/trabajo/
 │   │   │   │   ├── SolicitudController.java      # Controlador web principal
 │   │   │   │   ├── GridController.java           # Controlador de visualización de grilla
-│   │   │   │   └── TrabajoApplication.java       # Clase principal de Spring Boot
+│   │   │   │   ├── TrabajoApplication.java       # Clase principal de Spring Boot
+│   │   │   │   └── utilidades/                   # Cliente OpenAPI generado (ServicioConsumible)
+│   │   │   │       ├── ApiClient.java            # Cliente HTTP central (RestTemplate)
+│   │   │   │       ├── BaseApi.java              # Clase base para todas las APIs
+│   │   │   │       ├── EmailApi.java             # Cliente para /Email
+│   │   │   │       ├── ResultadosApi.java        # Cliente para /Resultados
+│   │   │   │       ├── SolicitudApi.java         # Cliente para /Solicitud/*
+│   │   │   │       ├── JavaTimeFormatter.java    # Utilidad de fechas
+│   │   │   │       ├── ServerConfiguration.java  # Configuración de servidor
+│   │   │   │       ├── ServerVariable.java       # Variables de servidor
+│   │   │   │       ├── auth/
+│   │   │   │       │   ├── Authentication.java   # Interfaz de autenticación
+│   │   │   │       │   ├── ApiKeyAuth.java       # Autenticación por API key
+│   │   │   │       │   ├── HttpBasicAuth.java    # Autenticación Basic
+│   │   │   │       │   └── HttpBearerAuth.java   # Autenticación Bearer token
+│   │   │   │       └── modelo/
+│   │   │   │           ├── Solicitud.java        # DTO de solicitud al servicio externo
+│   │   │   │           ├── EmailResponse.java    # DTO de respuesta de email
+│   │   │   │           └── ProblemDetails.java   # DTO de error RFC 7807
 │   │   │   │
 │   │   │   ├── interfaces/
 │   │   │   │   ├── InterfazContactoSim.java      # Interfaz para servicio de simulación
@@ -68,29 +126,10 @@ trabajo-individual-tt1-pr-ctica-5-sadie27/
 │   │   │   │   ├── Entidad.java                  # Modelo de entidad simulable
 │   │   │   │   └── Punto.java                    # Modelo de punto en la grilla
 │   │   │   │
-│   │   │   ├── servicios/
-│   │   │   │   ├── ContactoSimService.java       # Servicio de gestión de simulaciones (llama a API externa)
-│   │   │   │   ├── EnviarEmailsService.java      # Servicio de envío de emails
-│   │   │   │   └── LoggerConfig.java             # Configuración de logging
-│   │   │   │
-│   │   │   └── com/tt1/trabajo/utilidades/       # Cliente OpenAPI generado (ServicioConsumible)
-│   │   │       ├── ApiClient.java                # Cliente HTTP central (RestTemplate)
-│   │   │       ├── BaseApi.java                  # Clase base para todas las APIs
-│   │   │       ├── EmailApi.java                 # Cliente para /Email
-│   │   │       ├── ResultadosApi.java            # Cliente para /Resultados
-│   │   │       ├── SolicitudApi.java             # Cliente para /Solicitud/*
-│   │   │       ├── JavaTimeFormatter.java        # Utilidad de fechas
-│   │   │       ├── ServerConfiguration.java      # Configuración de servidor
-│   │   │       ├── ServerVariable.java           # Variables de servidor
-│   │   │       ├── auth/
-│   │   │       │   ├── Authentication.java       # Interfaz de autenticación
-│   │   │       │   ├── ApiKeyAuth.java           # Autenticación por API key
-│   │   │       │   ├── HttpBasicAuth.java        # Autenticación Basic
-│   │   │       │   └── HttpBearerAuth.java       # Autenticación Bearer token
-│   │   │       └── modelo/
-│   │   │           ├── Solicitud.java            # DTO de solicitud al servicio externo
-│   │   │           ├── EmailResponse.java        # DTO de respuesta de email
-│   │   │           └── ProblemDetails.java       # DTO de error RFC 7807
+│   │   │   └── servicios/
+│   │   │       ├── ContactoSimService.java       # Servicio de gestión de simulaciones (llama a API externa)
+│   │   │       ├── EnviarEmailsService.java      # Servicio de envío de emails
+│   │   │       └── LoggerConfig.java             # Configuración de logging
 │   │   │
 │   │   └── resources/
 │   │       ├── application.properties            # Configuración de la aplicación
@@ -104,14 +143,34 @@ trabajo-individual-tt1-pr-ctica-5-sadie27/
 │           ├── ContactoSimServiceTest.java           # Tests unitarios con mocks de RestTemplate y ResultadosApi
 │           ├── EnviarEmailsServiceTest.java          # Tests unitarios del servicio de emails con mock de Logger
 │           └── utilidades/
-│               └── ServicioConsumibleClientTest.java # Test de integración del cliente OpenAPI 
+│               └── ServicioConsumibleClientTest.java # Test de integración del cliente OpenAPI
 │
-├── .mvn/wrapper/
+├── .mvn/wrapper/                                 # Maven Wrapper files
+├── Dockerfile                                    # Configuración Docker para la aplicación
+├── docker-compose.yml                            # Orquestación de servicios con Docker
 ├── pom.xml                                       # Configuración de Maven
 ├── mvnw                                          # Maven Wrapper (Linux/Mac)
 ├── mvnw.cmd                                      # Maven Wrapper (Windows)
+├── LICENSE                                       
 └── README.md                                     
 ```
+
+## Arquitectura Docker
+
+El proyecto incluye soporte completo para Docker:
+
+### Dockerfile
+- Imagen base: `eclipse-temurin:17-jre` (JRE optimizado para producción)
+- Puerto expuesto: 8081
+- JAR de la aplicación: `trabajo-0.0.1-SNAPSHOT.jar`
+
+### Docker Compose
+Orquesta dos servicios en una red interna:
+1. **servicio-consumible**: Servicio externo (imagen `javillour/servicio-tt1:amd64`)
+2. **trabajo-individual**: Esta aplicación web
+
+Variables de entorno configuradas:
+- `SERVICIO_URL=http://servicio-consumible:8080` (permite comunicación entre contenedores)
 
 ## Flujo de Datos
 
@@ -125,6 +184,7 @@ SolicitudController.handleSolicitud()
 ContactoSimService.solicitarSimulation()
       │  convierte a {"solicitud": {"cantidadesIniciales": [...], "nombreEntidades": [...]}}
       │  POST http://localhost:8080/Solicitud/Solicitar?nombreUsuario=sadie27
+      │  (o http://servicio-consumible:8080 en Docker)
       │  extrae tokenSolicitud de la respuesta
       ▼
 formResult.html muestra el token
@@ -158,11 +218,13 @@ Para ejecutar solo los tests unitarios (sin servidor):
 - **Spring Boot 4.0.3**: Framework principal
 - **Spring MVC**: Para controladores web
 - **Thymeleaf**: Motor de plantillas para las vistas
-- **Spring REST Client / RestTemplate**: Para comunicación REST con el servicio externo
-- **OpenAPI Generator 7.21.0**: Generación automática del cliente HTTP
+- **Spring REST Client**: Para comunicación REST con el servicio externo
+- **OpenAPI Generator**: Generación automática del cliente HTTP a partir de la especificación OpenAPI del ServicioConsumible
 - **Maven 3.9.6**: Gestión de dependencias y construcción
 - **JUnit 5**: Framework de testing
 - **Mockito**: Mocking en tests unitarios
+- **Docker**: Containerización de la aplicación
+- **Docker Compose**: Orquestación de servicios (aplicación + ServicioConsumible)
 
 ## Licencia
 
