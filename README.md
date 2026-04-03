@@ -229,3 +229,4 @@ Para ejecutar solo los tests unitarios (sin servidor):
 ## Licencia
 
 Este proyecto está bajo la licencia especificada en el archivo LICENSE.
+
