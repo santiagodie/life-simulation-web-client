@@ -1,3 +1,4 @@
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=sadie27_trabajo-individual-tt1-pr-ctica-5-sadie27)](https://sonarcloud.io/summary/new_code?id=sadie27_trabajo-individual-tt1-pr-ctica-5-sadie27)
 # TrabajoIndividual-TT1-Docs
 
 Este proyecto es la parte del trabajo individual de la asignatura **Taller Transversal I: Programación y Proceso de Información** de la Universidad de La Rioja (curso 25/26)
