@@ -1,17 +1,181 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <title>Welcome</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud — Taller Transversal 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600&family=Hanken+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        oklch(97% 0.006 250);
+      --surface:   oklch(100% 0 0);
+      --border:    oklch(88% 0.008 250);
+      --border-focus: oklch(46% 0.18 265);
+      --text-1:    oklch(18% 0.01 255);
+      --text-2:    oklch(50% 0.01 255);
+      --accent:    oklch(46% 0.18 265);
+      --accent-bg: oklch(96% 0.03 265);
+      --font-d:    'Epilogue', sans-serif;
+      --font-b:    'Hanken Grotesk', sans-serif;
+      --r:         6px;
+    }
+
+    body {
+      font-family: var(--font-b);
+      background: var(--bg);
+      color: var(--text-1);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    header {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 3rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-family: var(--font-d);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    header span {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--text-2);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2rem;
+    }
+
+    .card-title {
+      font-family: var(--font-d);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin-bottom: 0.4rem;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      font-weight: 300;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .field {
+      margin-bottom: 1.25rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-2);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.01em;
+    }
+
+    .field input[type="number"] {
+      width: 100%;
+      height: 40px;
+      padding: 0 0.75rem;
+      font-family: var(--font-b);
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--text-1);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      -moz-appearance: textfield;
+    }
+
+    .field input[type="number"]::-webkit-outer-spin-button,
+    .field input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    .field input[type="number"]:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px oklch(46% 0.18 265 / 0.1);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.75rem 0;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      height: 42px;
+      background: var(--accent);
+      color: oklch(98% 0.01 265);
+      font-family: var(--font-d);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      border: none;
+      border-radius: var(--r);
+      cursor: pointer;
+      transition: opacity 0.15s ease, transform 0.1s ease;
+    }
+
+    button[type="submit"]:hover  { opacity: 0.88; }
+    button[type="submit"]:active { transform: scale(0.99); }
+  </style>
 </head>
-	<body>
-    	<form th:action="@{/solicitud}" method="post">
-			<div th:each="entity : ${entities}">
-			        <div>
-			            <label th:for="${entity.id}" th:text="'Num. de' + ${entity.name} + ':'"></label>
-			            <input type="number" min="0" th:id="${entity.id}" th:name="${entity.id}" />
-			        </div>
-			</div>
-			<button type="submit">Solicitar</button>
-		</form>
-	</body>
+<body>
+
+  <header>
+    <h1>Taller Transversal 1</h1>
+    <span>Santiago Die</span>
+  </header>
+
+  <div class="card">
+    <p class="card-title">Nueva solicitud</p>
+    <p class="card-desc">Introduce la cantidad de cada entidad para lanzar la simulación.</p>
+
+    <form th:action="@{/solicitud}" method="post">
+      <div th:each="entity : ${entities}" class="field">
+        <label th:for="${entity.id}" th:text="'Núm. de ' + ${entity.name}"></label>
+        <input type="number" min="0"
+               th:id="${entity.id}"
+               th:name="${entity.id}"
+               placeholder="0" />
+      </div>
+
+      <div class="divider"></div>
+
+      <button type="submit">Solicitar simulación</button>
+    </form>
+  </div>
+
+</body>
 </html>

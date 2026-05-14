@@ -1,10 +1,214 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <title>Welcome</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud enviada — Taller Transversal 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600&family=Hanken+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        oklch(97% 0.006 250);
+      --surface:   oklch(100% 0 0);
+      --border:    oklch(88% 0.008 250);
+      --text-1:    oklch(18% 0.01 255);
+      --text-2:    oklch(50% 0.01 255);
+      --accent:    oklch(46% 0.18 265);
+      --accent-bg: oklch(96% 0.03 265);
+      --ok:        oklch(52% 0.14 160);
+      --ok-bg:     oklch(96% 0.03 160);
+      --font-d:    'Epilogue', sans-serif;
+      --font-b:    'Hanken Grotesk', sans-serif;
+      --font-m:    'Epilogue', monospace;
+      --r:         6px;
+    }
+
+    body {
+      font-family: var(--font-b);
+      background: var(--bg);
+      color: var(--text-1);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    header {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 3rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-family: var(--font-d);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    header span {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--text-2);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .status-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--ok-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+    }
+
+    .status-dot svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--ok);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .card h2 {
+      font-family: var(--font-d);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .card p {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      font-weight: 300;
+      line-height: 1.6;
+      max-width: 34ch;
+      margin: 0 auto 1.75rem;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .token-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin-bottom: 0.65rem;
+    }
+
+    .token-box {
+      display: inline-block;
+      font-family: var(--font-m);
+      font-size: 1.45rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: var(--accent-bg);
+      padding: 0.55rem 1.25rem;
+      border-radius: var(--r);
+    }
+
+    .hint {
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--text-2);
+      font-weight: 300;
+    }
+
+    .btn-grid {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 1.25rem;
+      padding: 0.55rem 1.1rem;
+      font-family: var(--font-d);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-bg);
+      border: 1px solid oklch(46% 0.18 265 / 0.2);
+      border-radius: var(--r);
+      text-decoration: none;
+      transition: opacity 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-grid:hover  { opacity: 0.8; }
+    .btn-grid:active { transform: scale(0.98); }
+
+    .btn-grid svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+  </style>
 </head>
-	<body>
-    	<p>Su solicitud se ha realizado. Puede descargar los resultados cuando estén disponibles con el siguiente token:</p>
-		<h1 th:text="${token}"></h1>
-	</body>
+<body>
+
+  <header>
+    <h1>Taller Transversal 1</h1>
+    <span>Santiago Die</span>
+  </header>
+
+  <div class="card">
+    <div class="status-dot">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+
+    <h2>Solicitud enviada</h2>
+    <p>Los resultados estarán disponibles en breve. Usa el token para descargarlos cuando estén listos.</p>
+
+    <div class="divider"></div>
+
+    <p class="token-label">Token de descarga</p>
+    <div class="token-box" th:text="${token}">—</div>
+
+    <p class="hint">Guarda este token para recuperar tu simulación.</p>
+
+    <a th:href="@{'http://localhost:8081/grid?tok=' + ${token}}" class="btn-grid">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+        <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+        <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+        <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+      </svg>
+      Ver simulación
+    </a>
+  </div>
+
+</body>
 </html>

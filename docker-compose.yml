@@ -1,19 +1,14 @@
 services:
-  servicio-consumible:
-    image: javillour/servicio-tt1:amd64
-    networks:
-      - red-interna
-
   trabajo-individual:
     image: trabajo-individual
+    build: .
     ports:
       - "8081:8081"
     environment:
-      - SERVICIO_URL=http://servicio-consumible:8080
+      - SERVICIO_URL=http://app:8080
     networks:
-      - red-interna
-    depends_on:
-      - servicio-consumible
+      - trabajo_grupal_tt1_2026_solicitudes_network
 
 networks:
-  red-interna:
+  trabajo_grupal_tt1_2026_solicitudes_network:
+    external: true

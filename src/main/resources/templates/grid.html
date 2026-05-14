@@ -1,52 +1,281 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-	<head>
-    	<title>Welcome</title>
-		<style>
-			.grid {
-		  		display: grid;
-		  		grid-template-columns: repeat(3, 50px);
-		  		grid-gap: 5px;
-			}
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 
-			.grid div {
-		  		width: 50px;
-		  		height: 50px;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="slider-container">
-		    <input type="range" id="mySlider" min="0" th:max="${maxTime}" value="50">
-		    <span id="sliderValue">0</span>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Simulación — Taller Transversal 1</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600&family=Hanken+Grotesk:wght@300;400;500&display=swap"
+		rel="stylesheet">
+	<style>
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		:root {
+			--bg: oklch(97% 0.006 250);
+			--surface: oklch(100% 0 0);
+			--border: oklch(88% 0.008 250);
+			--text-1: oklch(18% 0.01 255);
+			--text-2: oklch(50% 0.01 255);
+			--accent: oklch(46% 0.18 265);
+			--accent-bg: oklch(96% 0.03 265);
+			--font-d: 'Epilogue', sans-serif;
+			--font-b: 'Hanken Grotesk', sans-serif;
+			--r: 6px;
+		}
+
+		body {
+			font-family: var(--font-b);
+			background: var(--bg);
+			color: var(--text-1);
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 2.5rem 1.5rem 4rem;
+		}
+
+		header {
+			width: 100%;
+			max-width: 720px;
+			display: flex;
+			justify-content: space-between;
+			align-items: baseline;
+			margin-bottom: 3rem;
+			padding-bottom: 1rem;
+			border-bottom: 1px solid var(--border);
+		}
+
+		header h1 {
+			font-family: var(--font-d);
+			font-size: 1.05rem;
+			font-weight: 600;
+			letter-spacing: -0.01em;
+			color: var(--text-1);
+		}
+
+		header span {
+			font-size: 0.8rem;
+			font-weight: 300;
+			color: var(--text-2);
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+		}
+
+		.card {
+			width: 100%;
+			max-width: 720px;
+			background: var(--surface);
+			border: 1px solid var(--border);
+			border-radius: var(--r);
+			padding: 2rem;
+		}
+
+		.card-title {
+			font-family: var(--font-d);
+			font-size: 0.7rem;
+			font-weight: 500;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			color: var(--text-2);
+			margin-bottom: 1.5rem;
+		}
+
+		.slider-row {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			margin-bottom: 2rem;
+		}
+
+		.slider-label {
+			font-size: 0.78rem;
+			color: var(--text-2);
+			font-weight: 400;
+			white-space: nowrap;
+		}
+
+		input[type="range"] {
+			-webkit-appearance: none;
+			appearance: none;
+			flex: 1;
+			height: 3px;
+			background: var(--border);
+			border-radius: 99px;
+			outline: none;
+			cursor: pointer;
+		}
+
+		input[type="range"]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			width: 16px;
+			height: 16px;
+			border-radius: 50%;
+			background: var(--accent);
+			border: 2px solid var(--surface);
+			box-shadow: 0 0 0 1px var(--accent);
+			transition: transform 0.15s ease;
+		}
+
+		input[type="range"]::-webkit-slider-thumb:hover {
+			transform: scale(1.2);
+		}
+
+		#sliderValue {
+			font-family: var(--font-d);
+			font-size: 0.85rem;
+			font-weight: 600;
+			color: var(--accent);
+			min-width: 2.5ch;
+			text-align: right;
+		}
+
+		.grid-wrapper {
+			overflow: auto;
+			display: flex;
+			justify-content: center;
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(3, 48px);
+			gap: 3px;
+		}
+
+		.grid div {
+			width: 48px;
+			height: 48px;
+			border-radius: 2px;
+			transition: background 0.12s ease;
+		}
+
+		.time-badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.4rem;
+			font-size: 0.72rem;
+			color: var(--accent);
+			background: var(--accent-bg);
+			padding: 0.25rem 0.65rem;
+			border-radius: 99px;
+			margin-bottom: 1.25rem;
+			font-weight: 500;
+		}
+
+		.time-badge::before {
+			content: '';
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			background: var(--accent);
+		}
+
+		.btn-nueva {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.45rem;
+			margin-top: 1.75rem;
+			padding: 0.55rem 1.1rem;
+			font-family: var(--font-d);
+			font-size: 0.82rem;
+			font-weight: 500;
+			color: var(--text-2);
+			background: transparent;
+			border: 1px solid var(--border);
+			border-radius: var(--r);
+			text-decoration: none;
+			transition: color 0.15s ease, border-color 0.15s ease;
+		}
+
+		.btn-nueva:hover {
+			color: var(--accent);
+			border-color: var(--accent);
+		}
+
+		.btn-nueva svg {
+			width: 14px;
+			height: 14px;
+			stroke: currentColor;
+			stroke-width: 2;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			fill: none;
+		}
+	</style>
+</head>
+
+<body>
+
+	<header>
+		<h1>Taller Transversal 1</h1>
+		<span>Santiago Die</span>
+	</header>
+
+	<div class="card">
+		<p class="card-title">Visualización de simulación</p>
+
+		<div class="slider-row">
+			<span class="slider-label">Tiempo</span>
+			<input type="range" id="mySlider" min="0" th:max="${maxTime}" value="0">
+			<span id="sliderValue">0</span>
 		</div>
-		<div class="grid" id='gr'></div>
-		<script th:inline="javascript">
-			const count = [[${count}]];
-			const colors = [[${colors}]];
-			function createSquares(){
-				var grid = document.getElementById('gr');
-				for(var i = 0; i < count; i++){
-					for(var j = 0; j < count; j++){
-				    	var node = document.createElement("div");
-						node.id = i+'-'+j;
-				      	node.style.background = colors['0-'+i+'-'+j]??'blue';
-				      	grid.appendChild(node);
-				    }
-				}
-				document.getElementsByClassName('grid').item(0).style.gridTemplateColumns = 'repeat('+count+',50px)';
-			}
-			const slider = document.getElementById("mySlider");
 
-			slider.addEventListener("input", function() {
-		    	for(var y = 0; y < count; y++){
-					for(var x = 0; x < count; x++){
-						var node = document.getElementById(y+'-'+x);
-						node.style.background = colors[slider.value+'-'+y+'-'+x]??'blue';
-					}
+		<div class="time-badge" id="timeBadge">t = 0</div>
+
+		<div class="grid-wrapper">
+			<div class="grid" id="gr"></div>
+		</div>
+
+		<a href="http://localhost:8081/solicitud" class="btn-nueva">
+			<svg viewBox="0 0 24 24" aria-hidden="true">
+				<line x1="12" y1="5" x2="12" y2="19"></line>
+				<line x1="5" y1="12" x2="19" y2="12"></line>
+			</svg>
+			Nueva simulación
+		</a>
+	</div>
+
+	<script th:inline="javascript">
+		const count = /*[[${count}]]*/ 3;
+		const colors = /*[[${colors}]]*/ {};
+
+		function createSquares() {
+			const grid = document.getElementById('gr');
+			grid.style.gridTemplateColumns = 'repeat(' + count + ', 48px)';
+			for (let i = 0; i < count; i++) {
+				for (let j = 0; j < count; j++) {
+					const node = document.createElement('div');
+					node.id = i + '-' + j;
+					node.style.background = colors['0-' + i + '-' + j] ?? '#d1d5db';
+					grid.appendChild(node);
 				}
-			});
+			}
+		}
+
+		const slider = document.getElementById('mySlider');
+		const valLabel = document.getElementById('sliderValue');
+		const timeBadge = document.getElementById('timeBadge');
+
+		slider.addEventListener('input', function () {
+			valLabel.textContent = slider.value;
+			timeBadge.textContent = 't = ' + slider.value;
+			for (let y = 0; y < count; y++) {
+				for (let x = 0; x < count; x++) {
+					const node = document.getElementById(y + '-' + x);
+					node.style.background = colors[slider.value + '-' + y + '-' + x] ?? '#d1d5db';
+				}
+			}
+		});
+
 		createSquares();
-		</script>
-	</body>
+	</script>
+</body>
+
 </html>
