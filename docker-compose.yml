@@ -1,14 +1,11 @@
 services:
+  # Requires life-simulation-service running on the host (its docker compose exposes port 8080)
   trabajo-individual:
     image: trabajo-individual
     build: .
     ports:
       - "8081:8081"
     environment:
-      - SERVICIO_URL=http://app:8080
-    networks:
-      - trabajo_grupal_tt1_2026_solicitudes_network
-
-networks:
-  trabajo_grupal_tt1_2026_solicitudes_network:
-    external: true
+      - SERVICIO_URL=${SERVICIO_URL:-http://host.docker.internal:8080}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
