@@ -199,7 +199,7 @@
 
     <p class="hint">Guarda este token para recuperar tu simulación.</p>
 
-    <a th:href="@{'http://localhost:8081/grid?tok=' + ${token}}" class="btn-grid">
+    <a th:href="@{/grid(tok=${token})}" class="btn-grid">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3" y="3" width="7" height="7" rx="1"></rect>
         <rect x="14" y="3" width="7" height="7" rx="1"></rect>
