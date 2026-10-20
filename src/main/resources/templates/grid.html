@@ -138,20 +138,20 @@
 		}
 
 		.grid-wrapper {
-			overflow: auto;
 			display: flex;
 			justify-content: center;
 		}
 
+		/* Cells are 48px wide at most and shrink with the card on narrow screens */
 		.grid {
 			display: grid;
-			grid-template-columns: repeat(3, 48px);
+			grid-template-columns: repeat(3, 1fr);
 			gap: 3px;
+			width: 100%;
 		}
 
 		.grid div {
-			width: 48px;
-			height: 48px;
+			aspect-ratio: 1;
 			border-radius: 2px;
 			transition: background 0.12s ease;
 		}
@@ -248,7 +248,8 @@
 
 		function createSquares() {
 			const grid = document.getElementById('gr');
-			grid.style.gridTemplateColumns = 'repeat(' + count + ', 48px)';
+			grid.style.gridTemplateColumns = 'repeat(' + count + ', 1fr)';
+			grid.style.maxWidth = (count * 48 + (count - 1) * 3) + 'px';
 			for (let i = 0; i < count; i++) {
 				for (let j = 0; j < count; j++) {
 					const node = document.createElement('div');
