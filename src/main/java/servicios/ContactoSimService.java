@@ -99,7 +99,7 @@ public class ContactoSimService implements InterfazContactoSim {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
-		ResponseEntity<Object> respuesta = restTemplate.postForEntity(servicioUrl + "/Solicitud/Solicitar?nombreUsuario=sadie27",
+		ResponseEntity<Object> respuesta = restTemplate.postForEntity(servicioUrl + "/Solicitud/Solicitar?nombreUsuario=santiagodie",
 			request,
 			Object.class
 		);
@@ -113,7 +113,7 @@ public class ContactoSimService implements InterfazContactoSim {
 	}
 	@Override
 	public DatosSimulation descargarDatos(int ticket) {
-		Object respuesta = resultadosApi.resultadosPost("sadie27", ticket);
+		Object respuesta = resultadosApi.resultadosPost("santiagodie", ticket);
 		if (respuesta == null) {
 			return null;
 		}

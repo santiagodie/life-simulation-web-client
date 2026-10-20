@@ -73,7 +73,7 @@ class ContactoSimServiceTest {
 
 		Map<String, Object> datosBody = new HashMap<>();
 		datosBody.put("data", "5\n0,1,2,red");
-		when(mockResultadosApi.resultadosPost("sadie27", 42)).thenReturn(datosBody);
+		when(mockResultadosApi.resultadosPost("santiagodie", 42)).thenReturn(datosBody);
 
 		Map<Integer, Integer> nums = new HashMap<>();
 		nums.put(1, 10);
@@ -83,7 +83,7 @@ class ContactoSimServiceTest {
 
 	@Test
 	void testDescargarDatosWithInvalidTicket() {
-		when(mockResultadosApi.resultadosPost("sadie27", 99999)).thenReturn(null);
+		when(mockResultadosApi.resultadosPost("santiagodie", 99999)).thenReturn(null);
 		assertNull(service.descargarDatos(99999));
 	}
 

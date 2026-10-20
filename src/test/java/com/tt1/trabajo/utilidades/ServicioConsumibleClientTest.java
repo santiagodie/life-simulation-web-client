@@ -37,7 +37,7 @@ public class ServicioConsumibleClientTest {
             HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
             ResponseEntity<Object> response = restTemplate.postForEntity(
-                "http://localhost:8080/Solicitud/Solicitar?nombreUsuario=sadie",
+                "http://localhost:8080/Solicitud/Solicitar?nombreUsuario=santiagodie",
                 request,
                 Object.class
             );
@@ -49,8 +49,8 @@ public class ServicioConsumibleClientTest {
 
         // 2. GET /Solicitud/GetSolicitudesUsuario
         try {
-            List<Integer> resultado = solicitudApi.solicitudGetSolicitudesUsuarioGet("sadie");
-            System.out.println("Solicitudes de sadie: " + resultado);
+            List<Integer> resultado = solicitudApi.solicitudGetSolicitudesUsuarioGet("santiagodie");
+            System.out.println("Solicitudes de santiagodie: " + resultado);
         } catch (Exception e) {
             System.out.println("Error en GetSolicitudesUsuario: " + e.getMessage());
         }
