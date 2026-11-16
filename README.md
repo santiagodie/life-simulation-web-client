@@ -107,6 +107,8 @@ The container reaches the service through `host.docker.internal:8080`; set `SERV
 ./mvnw test
 ```
 
+11 tests.
+
 Unit tests cover `ContactoSimService` (request body, token handling and result parsing, with mocked `RestTemplate` and `ResultadosApi`), `EnviarEmailsService` and the generated service client.
 
 ## Project Structure
